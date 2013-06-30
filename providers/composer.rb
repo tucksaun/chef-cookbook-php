@@ -1,5 +1,5 @@
 action :install do
-  execute "composer install" do
+  execute "composer install #{new_resource.cwd}" do
     command "composer install #{new_resource.options}"
     cwd new_resource.cwd
     action :run
@@ -12,7 +12,7 @@ action :install do
 end
 
 action :update do
-  execute "composer update" do
+  execute "composer update #{new_resource.cwd}" do
     command "composer update #{new_resource.options}"
     cwd new_resource.cwd
     action :run
@@ -30,7 +30,7 @@ action :create_project do
   end
 
   if !Dir.exists?(new_resource.directory) || (Dir.entries(new_resource.directory) - %w{ . .. }).empty?
-    execute "composer create-project" do
+    execute "composer create-project  #{new_resource.directory}" do
       command "composer create-project #{new_resource.package} #{new_resource.directory} #{new_resource.version} #{new_resource.options}"
       cwd new_resource.cwd
       environment new_resource.env_vars
